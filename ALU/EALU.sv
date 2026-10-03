@@ -9,7 +9,7 @@ module ALU #(parameter int dataw = 32) (
 typedef enum  logic [3:0] {
     AND  = 4'b0000,
     OR   = 4'b0001,
-    ADD  = 4'b0010,
+    ADD  = 4'b0010, 
     XOR  = 4'b0011,
     SLL  = 4'b0100,
     SRL  = 4'b0101,

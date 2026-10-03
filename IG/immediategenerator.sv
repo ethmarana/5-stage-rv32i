@@ -1,7 +1,7 @@
 module immediategenerator #() (
     input logic [31:0] instr, 
     input logic [2:0] immtype,
-    output logic [31:0] immtype
+    output logic [31:0] imm
 );
 
 typedef enum logic [2:0] {

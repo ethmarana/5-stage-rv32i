@@ -140,9 +140,6 @@ always_comb begin
 end 
 
 
-
-
-assign pc_next = pc + 4; 
 assign opcode = instr[6:0];
 assign funct3 = instr[14:12];
 assign funct7b5 = instr[30];
@@ -153,7 +150,7 @@ assign rd = instr[11:7];
 
 
 programcounter pcinstance (.clk(clk), .reset(reset), .pc_next(pc_next), .pc(pc));
-alu aluinstance (.a(rd1orpc), .b(rd2orimm), .control(alucontrol), .result(alu_result), .zero(aluzeroflag)); 
+ALU aluinstance (.a(rd1orpc), .b(rd2orimm), .control(alucontrol), .result(alu_result), .zero(aluzeroflag)); 
 immediategenerator iginstance (.instr(instr), .immtype(immtype), .imm(imm));
 controlunit cuinstance (
     .opcode(opcode),

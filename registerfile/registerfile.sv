@@ -1,6 +1,7 @@
 module regfile #(parameter int dataw = 32, parameter int regamt = 32) (
     input logic clk,
     input logic regwrite,
+    input logic reset,
     input logic [$clog2(regamt)-1:0] rs1,
     input logic [$clog2(regamt)-1:0] rs2,
     input logic [$clog2(regamt)-1:0] rd,
@@ -12,7 +13,7 @@ module regfile #(parameter int dataw = 32, parameter int regamt = 32) (
 logic [dataw-1:0] regs [0:regamt-1]; 
 
 always_ff @(posedge clk) begin
-    if (regwrite && rd != '0) begin
+    if (regwrite && rd != '0 && !reset) begin
         regs[rd] <= writedata; 
     end 
 end

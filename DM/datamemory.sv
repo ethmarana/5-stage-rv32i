@@ -1,5 +1,6 @@
 module datamemory (
     input logic clk,
+    input logic reset,
     input logic [31:0] address,
     input logic [31:0] datain,
     input logic dmwrite, 
@@ -9,7 +10,7 @@ module datamemory (
 logic [31:0] memory [0:255]; 
 
 always_ff @(posedge clk) begin
-    if (dmwrite) begin
+    if (dmwrite && !reset) begin
         memory[address[31:2]] <= datain;
     end 
 end 

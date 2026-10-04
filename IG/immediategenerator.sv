@@ -32,7 +32,7 @@ always_comb begin
         end 
 // unconditional, longer jumps than B type / imm[0] also is 0 for same purpose as b-type
         jtype: begin
-            imm = {{11{instr[31]}}, instr[31], instr[19:12], instr[20], instr[30:21], 1'b0}};
+            imm = {{11{instr[31]}}, instr[31], instr[19:12], instr[20], instr[30:21], 1'b0};
         end 
         default: begin
             imm = 32'b0;

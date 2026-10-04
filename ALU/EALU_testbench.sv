@@ -6,7 +6,7 @@ module ALU_tb;
     logic [31:0] result;
     logic zero;
 
-ALU instance1 #(.dataw(32)) (
+ALU #(.dataw(32)) instance1 (
     .a(a),
     .b(b),
     .control(control),

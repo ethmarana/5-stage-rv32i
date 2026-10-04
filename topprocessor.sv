@@ -167,7 +167,7 @@ controlunit cuinstance (
     .alucontrol(alucontrol)
 );
 instructionmemory iminstance (.address(pc), .instr(instr));
-registerfile rfinstance (.clk(clk), .regwrite(regwrite), .rs1(rs1), .rs2(rs2), .rd(rd), .writedata(writedata), .rd1(rd1), .rd2(rd2));
+regfile rfinstance (.clk(clk), .regwrite(regwrite), .rs1(rs1), .rs2(rs2), .rd(rd), .writedata(writedata), .rd1(rd1), .rd2(rd2));
 datamemory dminstance (.clk(clk), .address(alu_result), .datain(rd2), .dmwrite(memwrite), .dmread(dmread));
 
 endmodule 

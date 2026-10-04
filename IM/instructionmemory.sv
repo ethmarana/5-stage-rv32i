@@ -1,4 +1,4 @@
-module instructionmemory (
+module instructionmemory #(parameter string MEMFILE = "IM/program.hex") (
     input logic [31:0] address,
     output logic [31:0] instr
 );
@@ -6,7 +6,7 @@ module instructionmemory (
 logic [31:0] memory [0:255]; 
 
 initial begin
-    $readmemh("program.hex", memory);
+    $readmemh(MEMFILE, memory);
     //program hex contains: 
     // addi x1, x0, 5 00500093 
     // addi x2, x0, 3 00300113 

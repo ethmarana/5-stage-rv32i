@@ -11,7 +11,7 @@ initial begin
     // addi x1, x0, 5 00500093 
     // addi x2, x0, 3 00300113 
     // add x3, x1, x2 002081b3 
-    // end 00000000
+    // end forever loop 0000006f 
 end 
 
 assign instr = memory[address[31:2]];

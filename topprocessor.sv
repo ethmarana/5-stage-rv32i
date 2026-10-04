@@ -3,6 +3,7 @@ module tpross (
     input logic reset
 );
 
+
 logic [31:0] instr; 
 logic [6:0] opcode;
 logic [2:0] funct3;
@@ -29,13 +30,118 @@ logic [31:0] pc_next;
 logic [31:0] writedata;
 logic [31:0] dmread; 
 
+typedef enum logic [2:0] {
+    itype = 3'b000,
+    stype = 3'b001,
+    btype = 3'b010,
+    utype = 3'b011,
+    jtype = 3'b100
+} itypes; 
+
+typedef enum logic [1:0] {
+    ALUWRITE = 2'b00,
+    LOADWRITE = 2'b01,
+    JUMPWRITE = 2'b10,
+    LUIWRITE = 2'b11
+} writebackmuxtype;
+
+typedef enum logic [2:0] {
+    BEQ = 3'b000,
+    BNE = 3'b001,
+    BLT = 3'b100,
+    BGE = 3'b101,
+    BLTU = 3'b110,
+    BGEU = 3'b111
+} branchcomparators; 
 
 // for muxes
 logic [31:0] rd1orpc;
 logic [31:0] rd2orimm;
-
+//muxes 
 assign rd1orpc = srcasel ? pc : rd1;
 assign rd2orimm = alusrc ? imm : rd2;
+
+//writeback mux 
+always_comb begin
+    case(resultsrc)
+
+        ALUWRITE: begin
+            writedata = alu_result; 
+        end 
+
+        LOADWRITE: begin
+            writedata = dmread; 
+        end 
+
+        JUMPWRITE: begin
+            writedata = pc + 4; 
+        end 
+
+        LUIWRITE: begin
+            writedata = imm; 
+        end 
+
+        default: begin
+            writedata = 32'b0; 
+        end 
+
+    endcase 
+end 
+
+//pc_next logic
+always_comb begin
+    pc_next = pc + 4;
+    // jal 
+    if (immtype == jtype && jump) begin
+        pc_next = pc + imm; 
+    end else if (jump && immtype == itype) begin
+        // jalr, bit 0 is forced to 0 per ISA
+        pc_next = (rd1 + imm) & 32'hFFFFFFFE; 
+    end else if (branch) begin
+        case(funct3) 
+            BEQ: begin
+                if (aluzeroflag) begin
+                    pc_next = pc + imm; 
+                end 
+            end 
+
+            BNE: begin
+                if (!aluzeroflag) begin
+                    pc_next = pc + imm; 
+                end 
+            end 
+
+            BLT: begin
+                if (!aluzeroflag) begin
+                    pc_next = pc + imm;
+                end 
+            end 
+
+            BGE: begin
+                if (aluzeroflag) begin
+                    pc_next = pc + imm;
+                end 
+            end 
+
+            BLTU: begin
+                if (!aluzeroflag) begin
+                    pc_next = pc + imm; 
+                end 
+            end 
+
+            BGEU: begin
+                if (aluzeroflag) begin
+                    pc_next = pc + imm; 
+                end 
+            end 
+
+        endcase 
+    end 
+end 
+
+
+
+
 assign pc_next = pc + 4; 
 assign opcode = instr[6:0];
 assign funct3 = instr[14:12];
@@ -43,6 +149,8 @@ assign funct7b5 = instr[30];
 assign rs1 = instr[19:15];
 assign rs2 = instr[24:20];
 assign rd = instr[11:7];
+
+
 
 programcounter pcinstance (.clk(clk), .reset(reset), .pc_next(pc_next), .pc(pc));
 alu aluinstance (.a(rd1orpc), .b(rd2orimm), .control(alucontrol), .result(alu_result), .zero(aluzeroflag)); 

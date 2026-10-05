@@ -1,7 +1,21 @@
 module tpross (
     input logic clk,
-    input logic reset
+    input logic reset,
+    output logic [31:0] wb_data_out,
+    output logic [4:0] wb_rd_out,
+    output logic wb_write_out,
+    output logic [31:0] mem_addr_out,
+    output logic [31:0] mem_data_out,
+    output logic mem_write_out
 );
+
+//external assigns for observation purposes 
+assign wb_data_out = resultW;
+assign wb_rd_out = rdW;
+assign wb_write_out = rf_write_enable && !reset && (rdW != 5'd0);
+assign mem_addr_out = alu_resultM;
+assign mem_data_out = storedataM;
+assign mem_write_out = dm_write_enable && !reset;
 
 // IF stage
 logic [31:0] pcF;

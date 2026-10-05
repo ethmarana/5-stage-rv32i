@@ -4,8 +4,6 @@ module tpross (
     output logic [7:0] debug
 );
 
-//external assigns for observation purposes 
-assign debug = resultW[7:0];
 
 // IF stage
 logic [31:0] pcF;
@@ -113,6 +111,9 @@ logic flushE;
 // Valid-gated write enables
 logic rf_write_enable;
 logic dm_write_enable;
+
+//external assigns for observation purposes 
+assign debug = resultW[7:0];
 
 typedef enum logic [2:0] {
     itype = 3'b000,

@@ -1,4 +1,4 @@
-module instructionmemory #(parameter string MEMFILE = "IM/program.hex") (
+module instructionmemory #(parameter string MEMFILE = "program.mem") (
     input logic [31:0] address,
     output logic [31:0] instr
 );

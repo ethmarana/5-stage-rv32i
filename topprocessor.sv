@@ -3,7 +3,6 @@ module tpross (
     input logic reset
 );
 
-
 // IF stage
 logic [31:0] pcF;
 logic [31:0] pcplus4F;

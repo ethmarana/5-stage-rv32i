@@ -5,7 +5,7 @@ module tpross (
 );
 
 //external assigns for observation purposes 
-assign debug = resultW[7:0]
+assign debug = resultW[7:0];
 
 // IF stage
 logic [31:0] pcF;
